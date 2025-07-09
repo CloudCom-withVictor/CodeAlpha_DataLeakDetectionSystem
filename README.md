@@ -97,7 +97,7 @@ Design and deploy a secure, cloud-based system that:
 ### Project Overview
 The SecureVault application consists of:
 - **Backend**: `securevault-api`, built with Node.js and Express, connects to an AWS RDS PostgreSQL database (`user-securitydb`) and uses AES-256 encryption and JWT-based authentication for secure user registration and secret storage. Repository: [CloudCom-withVictor/securevault-api](https://github.com/CloudCom-withVictor/securevault-api).
-- **Frontend**: Vanilla JavaScript frontend, hosted on Vercel at [https://data-leak.vercel.app/dashboard.html](https://data-leak.vercel.app/dashboard.html), providing a user interface for interacting with the backend. Repository: [CloudCom-withVictor/bode-oni-wahala-frontend](https://github.com/CloudCom-withVictor/bode-oni-wahala-frontend).
+- **Frontend**: Vanilla JavaScript frontend, hosted on Vercel at [https://data-leak.vercel.app/dashboard.html](https://data-leak.vercel.app/dashboard.html), providing a user interface for interacting with the backend. Repository: [CloudCom-withVictor/CodeAlpha_DataLeakDetectionSystem-frontend](https://github.com/CloudCom-withVictor/CodeAlpha_DataLeakDetectionSystem-frontend).
 - **Goal**: Deploy the backend to AWS Lambda, the frontend to Vercel, and ensure CORS allows access from [https://data-leak.vercel.app](https://data-leak.vercel.app) and [http://localhost:5500](http://localhost:5500), using hardcoded secrets in a `.env` file.
 
 ### API Gateway
