@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SecureVault Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="toast.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>🔐 SecureVault</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+
+  <main class="main-content">
+    <section class="secret-form">
+      <h2>Add a New Secret</h2>
+      <textarea id="secretInput" placeholder="e.g. My launch code is 1234"></textarea>
+      <button onclick="storeSecret()">➕ Save Secret</button>
+      <button onclick="loadSecrets()">🔄 Refresh</button>
+    </section>
+
+    <section>
+      <h2>Your Stored Secrets</h2>
+      <div id="secretsGrid" class="secrets-grid"></div>
+    </section>
+  </main>
+
+  <div id="toast"></div>
+  <script src="toast.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

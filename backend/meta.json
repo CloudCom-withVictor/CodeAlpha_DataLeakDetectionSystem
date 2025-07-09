@@ -1,0 +1,1177 @@
+{
+  "C:\\Users\\USER\\Documents\\Bode oni wahala\\serverless.yaml": {
+    "versionFramework": "4.17.1",
+    "servicePath": "C:\\Users\\USER\\Documents\\Bode oni wahala\\serverless.yaml",
+    "serviceConfigFileName": "serverless.yaml",
+    "service": {
+      "service": "securevault-api",
+      "frameworkVersion": "4",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs18.x",
+        "region": "us-east-1",
+        "stage": "dev",
+        "memorySize": 256,
+        "timeout": 10,
+        "httpApi": {
+          "payload": "2.0"
+        },
+        "vpc": {
+          "securityGroupIds": [
+            "sg-073b235e71a80c9cc"
+          ],
+          "subnetIds": [
+            "subnet-08ce220807b0947a6",
+            "subnet-01492e08be7064cee",
+            "subnet-08ccc3a97b15c9fe7",
+            "subnet-03d19975461b33a41",
+            "subnet-053081826548a8c32",
+            "subnet-03028deec9392a4d0"
+          ]
+        },
+        "environment": {
+          "PORT": "8081",
+          "DB_PORT": "5432",
+          "DB_HOST": "user-securitydb.csx6yem6kqfu.us-east-1.rds.amazonaws.com",
+          "DB_USER": "securityAdmin",
+          "DB_PASS": "Re:Start#3",
+          "DB_NAME": "user-securitydb",
+          "JWT_SECRET": "<REDACTED>",
+          "ENCRYPTION_KEY": "88575dcdc169e6f2f42c2ddf8e9bbc7e53be8df331935b2b6a0102d9cc80eb33"
+        },
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "ssm:*",
+                  "s3:*",
+                  "logs:*",
+                  "lambda:*",
+                  "iam:GetRole",
+                  "iam:PassRole"
+                ],
+                "Resource": "*"
+              }
+            ]
+          }
+        },
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "AppLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/securevault-api-dev-app"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "securevault-api",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/securevault-api-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/securevault-api-dev*:*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "ssm:*",
+                            "s3:*",
+                            "logs:*",
+                            "lambda:*",
+                            "iam:GetRole",
+                            "iam:PassRole"
+                          ],
+                          "Resource": "*"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "securevault-api",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                },
+                "ManagedPolicyArns": [
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            },
+            "AppLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+                  "S3Key": "serverless/securevault-api/dev/1751625957568-2025-07-04T10:45:57.568Z/securevault-api.zip"
+                },
+                "Handler": "handler.server",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "securevault-api-dev-app",
+                "MemorySize": 256,
+                "Timeout": 10,
+                "Environment": {
+                  "Variables": {
+                    "PORT": "8081",
+                    "DB_PORT": "5432",
+                    "DB_HOST": "user-securitydb.csx6yem6kqfu.us-east-1.rds.amazonaws.com",
+                    "DB_USER": "securityAdmin",
+                    "DB_PASS": "Re:Start#3",
+                    "DB_NAME": "user-securitydb",
+                    "JWT_SECRET": "<REDACTED>",
+                    "ENCRYPTION_KEY": "88575dcdc169e6f2f42c2ddf8e9bbc7e53be8df331935b2b6a0102d9cc80eb33"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                },
+                "VpcConfig": {
+                  "SecurityGroupIds": [
+                    "sg-073b235e71a80c9cc"
+                  ],
+                  "SubnetIds": [
+                    "subnet-08ce220807b0947a6",
+                    "subnet-01492e08be7064cee",
+                    "subnet-08ccc3a97b15c9fe7",
+                    "subnet-03d19975461b33a41",
+                    "subnet-053081826548a8c32",
+                    "subnet-03028deec9392a4d0"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "AppLogGroup"
+              ]
+            },
+            "AppLambdaVersionyZ2XMS0tSHnK7B5HkbdGaaAZig2ph1OrZjxXhvt6XLA": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "AppLambdaFunction"
+                },
+                "CodeSha256": "JofcMKLgZNgVdcgW6y9CCbGJE2pZbbvCUaRAzdTPyk0="
+              }
+            },
+            "HttpApi": {
+              "Type": "AWS::ApiGatewayV2::Api",
+              "Properties": {
+                "Name": "dev-securevault-api",
+                "ProtocolType": "HTTP"
+              }
+            },
+            "HttpApiStage": {
+              "Type": "AWS::ApiGatewayV2::Stage",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "StageName": "$default",
+                "AutoDeploy": true,
+                "DefaultRouteSettings": {
+                  "DetailedMetricsEnabled": false
+                }
+              }
+            },
+            "AppLambdaPermissionHttpApi": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "AppLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "HttpApi"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "HttpApiIntegrationApp": {
+              "Type": "AWS::ApiGatewayV2::Integration",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": {
+                  "Fn::GetAtt": [
+                    "AppLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "PayloadFormatVersion": "2.0",
+                "TimeoutInMillis": 30000
+              }
+            },
+            "HttpApiRouteAnyProxyVar": {
+              "Type": "AWS::ApiGatewayV2::Route",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "RouteKey": "ANY /{proxy+}",
+                "Target": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "integrations",
+                      {
+                        "Ref": "HttpApiIntegrationApp"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "DependsOn": "HttpApiIntegrationApp"
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+              "Export": {
+                "Name": "sls-securevault-api-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "AppLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "AppLambdaVersionyZ2XMS0tSHnK7B5HkbdGaaAZig2ph1OrZjxXhvt6XLA"
+              },
+              "Export": {
+                "Name": "sls-securevault-api-dev-AppLambdaFunctionQualifiedArn"
+              }
+            },
+            "HttpApiId": {
+              "Description": "Id of the HTTP API",
+              "Value": {
+                "Ref": "HttpApi"
+              },
+              "Export": {
+                "Name": "sls-securevault-api-dev-HttpApiId"
+              }
+            },
+            "HttpApiUrl": {
+              "Description": "URL of the HTTP API",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-securevault-api-dev-HttpApiUrl"
+              }
+            }
+          }
+        }
+      },
+      "functions": {
+        "app": {
+          "handler": "handler.server",
+          "events": [
+            {
+              "httpApi": {
+                "path": "/{proxy+}",
+                "method": "*",
+                "cors": {
+                  "allowedOrigins": [
+                    "*"
+                  ],
+                  "allowedHeaders": [
+                    "Content-Type"
+                  ],
+                  "allowedMethods": [
+                    "GET",
+                    "POST",
+                    "OPTIONS"
+                  ]
+                }
+              },
+              "resolvedMethod": "ANY",
+              "resolvedPath": "/{proxy+}"
+            }
+          ],
+          "name": "securevault-api-dev-app",
+          "package": {},
+          "memory": 256,
+          "timeout": 10,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "AppLambdaVersionyZ2XMS0tSHnK7B5HkbdGaaAZig2ph1OrZjxXhvt6XLA"
+        }
+      },
+      "plugins": [
+        "serverless-dotenv-plugin",
+        "serverless-offline"
+      ],
+      "package": {
+        "exclude": [
+          ".gitignore",
+          "README.md",
+          "tests/**",
+          ".vscode/**"
+        ],
+        "artifactsS3KeyDirname": "serverless/securevault-api/dev/code-artifacts",
+        "deploymentBucket": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+        "artifact": "C:\\Users\\USER\\Documents\\Bode oni wahala\\.serverless\\securevault-api.zip",
+        "artifactDirectoryName": "serverless/securevault-api/dev/1751625957568-2025-07-04T10:45:57.568Z"
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs18.x",
+      "region": "us-east-1",
+      "stage": "dev",
+      "memorySize": 256,
+      "timeout": 10,
+      "httpApi": {
+        "payload": "2.0"
+      },
+      "vpc": {
+        "securityGroupIds": [
+          "sg-073b235e71a80c9cc"
+        ],
+        "subnetIds": [
+          "subnet-08ce220807b0947a6",
+          "subnet-01492e08be7064cee",
+          "subnet-08ccc3a97b15c9fe7",
+          "subnet-03d19975461b33a41",
+          "subnet-053081826548a8c32",
+          "subnet-03028deec9392a4d0"
+        ]
+      },
+      "environment": {
+        "PORT": "8081",
+        "DB_PORT": "5432",
+        "DB_HOST": "user-securitydb.csx6yem6kqfu.us-east-1.rds.amazonaws.com",
+        "DB_USER": "securityAdmin",
+        "DB_PASS": "Re:Start#3",
+        "DB_NAME": "user-securitydb",
+        "JWT_SECRET": "<REDACTED>",
+        "ENCRYPTION_KEY": "88575dcdc169e6f2f42c2ddf8e9bbc7e53be8df331935b2b6a0102d9cc80eb33"
+      },
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:*",
+                "s3:*",
+                "logs:*",
+                "lambda:*",
+                "iam:GetRole",
+                "iam:PassRole"
+              ],
+              "Resource": "*"
+            }
+          ]
+        }
+      },
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "AppLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/securevault-api-dev-app"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "securevault-api",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/securevault-api-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/securevault-api-dev*:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "ssm:*",
+                          "s3:*",
+                          "logs:*",
+                          "lambda:*",
+                          "iam:GetRole",
+                          "iam:PassRole"
+                        ],
+                        "Resource": "*"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "securevault-api",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          "AppLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+                "S3Key": "serverless/securevault-api/dev/1751625957568-2025-07-04T10:45:57.568Z/securevault-api.zip"
+              },
+              "Handler": "handler.server",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "securevault-api-dev-app",
+              "MemorySize": 256,
+              "Timeout": 10,
+              "Environment": {
+                "Variables": {
+                  "PORT": "8081",
+                  "DB_PORT": "5432",
+                  "DB_HOST": "user-securitydb.csx6yem6kqfu.us-east-1.rds.amazonaws.com",
+                  "DB_USER": "securityAdmin",
+                  "DB_PASS": "Re:Start#3",
+                  "DB_NAME": "user-securitydb",
+                  "JWT_SECRET": "<REDACTED>",
+                  "ENCRYPTION_KEY": "88575dcdc169e6f2f42c2ddf8e9bbc7e53be8df331935b2b6a0102d9cc80eb33"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "VpcConfig": {
+                "SecurityGroupIds": [
+                  "sg-073b235e71a80c9cc"
+                ],
+                "SubnetIds": [
+                  "subnet-08ce220807b0947a6",
+                  "subnet-01492e08be7064cee",
+                  "subnet-08ccc3a97b15c9fe7",
+                  "subnet-03d19975461b33a41",
+                  "subnet-053081826548a8c32",
+                  "subnet-03028deec9392a4d0"
+                ]
+              }
+            },
+            "DependsOn": [
+              "AppLogGroup"
+            ]
+          },
+          "AppLambdaVersionyZ2XMS0tSHnK7B5HkbdGaaAZig2ph1OrZjxXhvt6XLA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "AppLambdaFunction"
+              },
+              "CodeSha256": "JofcMKLgZNgVdcgW6y9CCbGJE2pZbbvCUaRAzdTPyk0="
+            }
+          },
+          "HttpApi": {
+            "Type": "AWS::ApiGatewayV2::Api",
+            "Properties": {
+              "Name": "dev-securevault-api",
+              "ProtocolType": "HTTP"
+            }
+          },
+          "HttpApiStage": {
+            "Type": "AWS::ApiGatewayV2::Stage",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "StageName": "$default",
+              "AutoDeploy": true,
+              "DefaultRouteSettings": {
+                "DetailedMetricsEnabled": false
+              }
+            }
+          },
+          "AppLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "AppLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationApp": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "Fn::GetAtt": [
+                  "AppLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteAnyProxyVar": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "ANY /{proxy+}",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationApp"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationApp"
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+            "Export": {
+              "Name": "sls-securevault-api-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "AppLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "AppLambdaVersionyZ2XMS0tSHnK7B5HkbdGaaAZig2ph1OrZjxXhvt6XLA"
+            },
+            "Export": {
+              "Name": "sls-securevault-api-dev-AppLambdaFunctionQualifiedArn"
+            }
+          },
+          "HttpApiId": {
+            "Description": "Id of the HTTP API",
+            "Value": {
+              "Ref": "HttpApi"
+            },
+            "Export": {
+              "Name": "sls-securevault-api-dev-HttpApiId"
+            }
+          },
+          "HttpApiUrl": {
+            "Description": "URL of the HTTP API",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "HttpApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  }
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-securevault-api-dev-HttpApiUrl"
+            }
+          }
+        }
+      }
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "service: securevault-api \r\n\r\nframeworkVersion: '4'\r\n\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: nodejs18.x\r\n  region: us-east-1\r\n  stage: dev\r\n  memorySize: 256\r\n  timeout: 10\r\n  httpApi:\r\n    payload: '2.0'\r\n  vpc:\r\n    securityGroupIds:\r\n      - sg-073b235e71a80c9cc\r\n    subnetIds:\r\n      - subnet-08ce220807b0947a6\r\n      - subnet-01492e08be7064cee\r\n      - subnet-08ccc3a97b15c9fe7\r\n      - subnet-03d19975461b33a41\r\n      - subnet-053081826548a8c32\r\n      - subnet-03028deec9392a4d0 \r\n  environment:\r\n    PORT: ${env:PORT}\r\n    DB_PORT: ${env:DB_PORT}\r\n    DB_HOST: ${env:DB_HOST}\r\n    DB_USER: ${env:DB_USER}\r\n    DB_PASS: ${env:DB_PASS}\r\n    DB_NAME: ${env:DB_NAME}\r\n    JWT_SECRET: ${env:JWT_SECRET}\r\n    ENCRYPTION_KEY: ${env:ENCRYPTION_KEY}\r\n\r\n  iam:\r\n    role:\r\n      statements:\r\n        - Effect: Allow\r\n          Action:\r\n            - ssm:*\r\n            - s3:*\r\n            - logs:*\r\n            - lambda:*\r\n            - iam:GetRole\r\n            - iam:PassRole\r\n          Resource: \"*\"\r\n\r\nfunctions:\r\n  app:\r\n    handler: handler.server\r\n    events:\r\n      - httpApi:\r\n          path: /{proxy+}\r\n          method: '*'\r\n          cors:\r\n            allowedOrigins:\r\n              - '*'  # 🔓 Allow all origins for dev\r\n            allowedHeaders:\r\n              - Content-Type\r\n            allowedMethods:\r\n              - GET\r\n              - POST\r\n              - OPTIONS\r\n\r\nplugins:\r\n  - serverless-dotenv-plugin\r\n  - serverless-offline\r\n\r\npackage:\r\n  exclude:\r\n    - .gitignore\r\n    - README.md\r\n    - tests/**\r\n    - .vscode/**\r\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "orgId": "0025e1d6-3cf3-4afa-b495-8d4d017eec65",
+    "orgName": "lorddbonee",
+    "userId": "R3xYYJhktjZMtBDQ4k",
+    "userName": "lorddbonee",
+    "serviceProviderAwsAccountId": "521162753657",
+    "serviceProviderAwsCfStackName": "securevault-api-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:521162753657:stack/securevault-api-dev/9d2e5a20-581a-11f0-90f5-12828af15d91",
+    "serviceProviderAwsCfStackCreated": "2025-07-03T14:32:57.908Z",
+    "serviceProviderAwsCfStackUpdated": "2025-07-04T10:41:49.101Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "AppLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:521162753657:function:securevault-api-dev-app:16",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-securevault-api-dev-AppLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "HttpApiId",
+        "OutputValue": "86beqm147d",
+        "Description": "Id of the HTTP API",
+        "ExportName": "sls-securevault-api-dev-HttpApiId"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+        "ExportName": "sls-securevault-api-dev-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "HttpApiUrl",
+        "OutputValue": "https://86beqm147d.execute-api.us-east-1.amazonaws.com",
+        "Description": "URL of the HTTP API",
+        "ExportName": "sls-securevault-api-dev-HttpApiUrl"
+      }
+    ],
+    "compiledCloudFormationTemplate": {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "The AWS CloudFormation template for this Serverless application",
+      "Resources": {
+        "AppLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/securevault-api-dev-app"
+          }
+        },
+        "IamRoleLambdaExecution": {
+          "Type": "AWS::IAM::Role",
+          "Properties": {
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": [
+                      "lambda.amazonaws.com"
+                    ]
+                  },
+                  "Action": [
+                    "sts:AssumeRole"
+                  ]
+                }
+              ]
+            },
+            "Policies": [
+              {
+                "PolicyName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "securevault-api",
+                      "dev",
+                      "lambda"
+                    ]
+                  ]
+                },
+                "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:CreateLogStream",
+                        "logs:CreateLogGroup",
+                        "logs:TagResource"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/securevault-api-dev*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:PutLogEvents"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/securevault-api-dev*:*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "ssm:*",
+                        "s3:*",
+                        "logs:*",
+                        "lambda:*",
+                        "iam:GetRole",
+                        "iam:PassRole"
+                      ],
+                      "Resource": "*"
+                    }
+                  ]
+                }
+              }
+            ],
+            "Path": "/",
+            "RoleName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "securevault-api",
+                  "dev",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  "lambdaRole"
+                ]
+              ]
+            },
+            "ManagedPolicyArns": [
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        "AppLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+              "S3Key": "serverless/securevault-api/dev/1751625957568-2025-07-04T10:45:57.568Z/securevault-api.zip"
+            },
+            "Handler": "handler.server",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "securevault-api-dev-app",
+            "MemorySize": 256,
+            "Timeout": 10,
+            "Environment": {
+              "Variables": {
+                "PORT": "8081",
+                "DB_PORT": "5432",
+                "DB_HOST": "user-securitydb.csx6yem6kqfu.us-east-1.rds.amazonaws.com",
+                "DB_USER": "securityAdmin",
+                "DB_PASS": "Re:Start#3",
+                "DB_NAME": "user-securitydb",
+                "JWT_SECRET": "<REDACTED>",
+                "ENCRYPTION_KEY": "88575dcdc169e6f2f42c2ddf8e9bbc7e53be8df331935b2b6a0102d9cc80eb33"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            },
+            "VpcConfig": {
+              "SecurityGroupIds": [
+                "sg-073b235e71a80c9cc"
+              ],
+              "SubnetIds": [
+                "subnet-08ce220807b0947a6",
+                "subnet-01492e08be7064cee",
+                "subnet-08ccc3a97b15c9fe7",
+                "subnet-03d19975461b33a41",
+                "subnet-053081826548a8c32",
+                "subnet-03028deec9392a4d0"
+              ]
+            }
+          },
+          "DependsOn": [
+            "AppLogGroup"
+          ]
+        },
+        "AppLambdaVersionyZ2XMS0tSHnK7B5HkbdGaaAZig2ph1OrZjxXhvt6XLA": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "AppLambdaFunction"
+            },
+            "CodeSha256": "JofcMKLgZNgVdcgW6y9CCbGJE2pZbbvCUaRAzdTPyk0="
+          }
+        },
+        "HttpApi": {
+          "Type": "AWS::ApiGatewayV2::Api",
+          "Properties": {
+            "Name": "dev-securevault-api",
+            "ProtocolType": "HTTP"
+          }
+        },
+        "HttpApiStage": {
+          "Type": "AWS::ApiGatewayV2::Stage",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "StageName": "$default",
+            "AutoDeploy": true,
+            "DefaultRouteSettings": {
+              "DetailedMetricsEnabled": false
+            }
+          }
+        },
+        "AppLambdaPermissionHttpApi": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "AppLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "HttpApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "HttpApiIntegrationApp": {
+          "Type": "AWS::ApiGatewayV2::Integration",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "IntegrationType": "AWS_PROXY",
+            "IntegrationUri": {
+              "Fn::GetAtt": [
+                "AppLambdaFunction",
+                "Arn"
+              ]
+            },
+            "PayloadFormatVersion": "2.0",
+            "TimeoutInMillis": 30000
+          }
+        },
+        "HttpApiRouteAnyProxyVar": {
+          "Type": "AWS::ApiGatewayV2::Route",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "RouteKey": "ANY /{proxy+}",
+            "Target": {
+              "Fn::Join": [
+                "/",
+                [
+                  "integrations",
+                  {
+                    "Ref": "HttpApiIntegrationApp"
+                  }
+                ]
+              ]
+            }
+          },
+          "DependsOn": "HttpApiIntegrationApp"
+        }
+      },
+      "Outputs": {
+        "ServerlessDeploymentBucketName": {
+          "Value": "serverless-framework-deployments-us-east-1-6fbe0658-43e3",
+          "Export": {
+            "Name": "sls-securevault-api-dev-ServerlessDeploymentBucketName"
+          }
+        },
+        "AppLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "AppLambdaVersionyZ2XMS0tSHnK7B5HkbdGaaAZig2ph1OrZjxXhvt6XLA"
+          },
+          "Export": {
+            "Name": "sls-securevault-api-dev-AppLambdaFunctionQualifiedArn"
+          }
+        },
+        "HttpApiId": {
+          "Description": "Id of the HTTP API",
+          "Value": {
+            "Ref": "HttpApi"
+          },
+          "Export": {
+            "Name": "sls-securevault-api-dev-HttpApiId"
+          }
+        },
+        "HttpApiUrl": {
+          "Description": "URL of the HTTP API",
+          "Value": {
+            "Fn::Join": [
+              "",
+              [
+                "https://",
+                {
+                  "Ref": "HttpApi"
+                },
+                ".execute-api.",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ".",
+                {
+                  "Ref": "AWS::URLSuffix"
+                }
+              ]
+            ]
+          },
+          "Export": {
+            "Name": "sls-securevault-api-dev-HttpApiUrl"
+          }
+        }
+      }
+    }
+  }
+}

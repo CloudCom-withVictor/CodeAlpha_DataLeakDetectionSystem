@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | SecureVault</title>
+  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="toast.css" />
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-left">
+      <h1>🔐 Welcome to SecureVault</h1>
+      <p>Your secrets. Encrypted. Private. Yours.</p>
+    </div>
+
+    <div class="login-right">
+      <div class="form-card">
+        <h2>Log In</h2>
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Password" />
+        <textarea id="secret" placeholder="Optional: Store a secret on login"></textarea>
+        <button onclick="login()">Login & Save</button>
+        <p class="register-link">Don't have an account? <a href="register.html">Register</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="toast.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
